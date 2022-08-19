@@ -1,15 +1,18 @@
 <?php
 session_start();
-$pageFlag = 0;
 
-if(!empty($_POST)){
+require 'validation.php';
+$pageFlag = 0;
+$errors = validation($_POST);
+
+if (!empty($_POST)) {
     echo '<pre>';
     var_dump($_POST);
     echo '</pre>';
 }
 
 
-if (!empty($_POST['btn_confirm'])) {
+if (!empty($_POST['btn_confirm']) && empty($errors)) {
     $pageFlag = 1;
 }
 if (!empty($_POST['btn_submit'])) {
@@ -44,6 +47,16 @@ function h($str)
         $token = $_SESSION['csrfToken'];
         ?>
 
+        <?php if (!empty($errors) && !empty($_POST['btn_confirm'])) : ?>
+            <?php echo '<ul>'; ?>
+            <?php
+            foreach ($errors as $error) {
+                echo '<li>' . $error . '</li>';
+            }
+            ?>
+            <?php echo '</ul>'; ?>
+        <?php endif; ?>
+
         入力画面
         <form method="POST" action="form.php">
 
@@ -51,22 +64,23 @@ function h($str)
             <input type="text" name="your_name" value="<?php echo h($_POST['your_name']); ?>">
             <br>
             <label for="">email</label>
-            <input type="email" name="email" value="<?php echo h($_POST['email']); ?>">
+            <input type="text" name="email" value="<?php echo h($_POST['email']); ?>">
             <br>
 
             <label for="">ホームページ</label>
-            <input type="url" name="url" value="<?php echo h($_POST['url']); ?>">
+            <input type="text" name="url" value="<?php echo h($_POST['url']); ?>">
             <br>
             <label for="">性別</label>
-            <input type="radio" name="gender" value="0"
-            <?php if(!empty($_POST['gender'] && $_POST['gender'] ==="0")){
-                { echo 'checked';}
-            }?> checked>男性
+            <input type="radio" name="gender" value="0" <?php if (!empty($_POST['gender'] && $_POST['gender'] === "0")) { {
+                                                                echo 'checked';
+                                                            }
+                                                        } ?> checked>
+            男性
 
-            <input type="radio" name="gender" value="1"
-            <?php if(!empty($_POST['gender'] && $_POST['gender'] ==="1")){
-                { echo 'checked';};
-            }?>>女性
+            <input type="radio" name="gender" value="1" <?php if (!empty($_POST['gender'] && $_POST['gender'] === "1")) { {
+                                                                echo 'checked';
+                                                            };
+                                                        } ?>>女性
             <br>
             <label for="">年齢</label>
             <select name="age" id="">
@@ -106,29 +120,41 @@ function h($str)
                 <?php echo h($_POST['email']); ?>
                 <br>
                 <label for="">ホームページ</label>
-                <?php echo h($_POST['url']);?>
+                <?php echo h($_POST['url']); ?>
                 <br>
                 <label for="">性別</label>
-                <?php 
-                if($_POST['gender'] === 0){
+                <?php
+                if ($_POST['gender'] === 0) {
                     echo "男";
-                }else{
+                } else {
                     echo "女";
                 }
                 ?>
                 <br>
                 <label for="">年齢</label>
-                <?php 
-                if($_POST['age'] == 1){ echo "~19";};
-                if($_POST['age'] == 2){ echo "20~29";};
-                if($_POST['age'] == 3){ echo "30~39";};
-                if($_POST['age'] == 4){ echo "40~49";};
-                if($_POST['age'] == 5){ echo "50~59";};
-                if($_POST['age'] == 6){ echo "60~";};
+                <?php
+                if ($_POST['age'] == 1) {
+                    echo "~19";
+                };
+                if ($_POST['age'] == 2) {
+                    echo "20~29";
+                };
+                if ($_POST['age'] == 3) {
+                    echo "30~39";
+                };
+                if ($_POST['age'] == 4) {
+                    echo "40~49";
+                };
+                if ($_POST['age'] == 5) {
+                    echo "50~59";
+                };
+                if ($_POST['age'] == 6) {
+                    echo "60~";
+                };
                 ?>
                 <br>
                 <label for="">お問い合わせ内容</label>
-                <?php echo h($_POST['contact']);?>
+                <?php echo h($_POST['contact']); ?>
 
 
                 <input type="submit" name="back" value="戻ります">

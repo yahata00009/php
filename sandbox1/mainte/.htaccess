@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "IDとパスワードを入力してください"
+AuthUserFile /home/sandbox1/mainte/test.php/.htaccess
+rewuire valid-user
