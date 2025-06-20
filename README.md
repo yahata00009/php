@@ -1,3 +1,5 @@
 # php
 phpとlaravelの練習用です
-(面倒なので)新卒研修の環境構築を流用してます
+
+環境は
+vagrant + virtualboxです
